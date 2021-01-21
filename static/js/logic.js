@@ -1,3 +1,5 @@
+//Map Renders Best in Firefox
+
 let map = createMap();
 addLayers(map);
 createCounties(map);
@@ -44,12 +46,23 @@ function addLayers(map) {
         }
       );
 
-    streetMap.addTo(map);
+    let customMap = L.tileLayer(
+        "https://api.mapbox.com/styles/v1/npvoravong/ckk789atq058v17od5oxukhq7/tiles/{z}/{x}/{y}?access_token={accessToken}",
+    {
+        attribution:
+        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 10,
+        accessToken: API_KEY,
+    }
+    );
+
+    customMap.addTo(map);
 
     let baseMaps = {
     "Light Map": lightMap,
     "Satellite Map": satelliteMap,
     "Street Map": streetMap,
+    "Custom Map": customMap,
     };
 
     let mapLayers = {
@@ -118,3 +131,16 @@ function mapStyle() {
     );
   };
 
+  (function(){
+    var originalInitTile = L.GridLayer.prototype._initTile
+    L.GridLayer.include({
+        _initTile: function (tile) {
+            originalInitTile.call(this, tile);
+
+            var tileSize = this.getTileSize();
+
+            tile.style.width = tileSize.x + 1 + 'px';
+            tile.style.height = tileSize.y + 1 + 'px';
+        }
+    });
+})()
