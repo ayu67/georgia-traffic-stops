@@ -1,65 +1,85 @@
 d3.csv("data/traffic_stops_2016.csv").then(doTheThing);
-globalData = 0;
-unique = {};
+globalData = []; 
+globalUnique = {}; //Unique data for full data
 countySummary = {};
 
 function doTheThing(data)
 {
     globalData = data
-    getUniqueArrays();
-    console.log(globalData);
+    globalUnique = getUniqueArrays(globalData);
+    console.log(globalUnique);
 }
 
-//Collect Unique data to make menus easily
-function getUniqueArrays()
+//Return Unique data for any subset of stops data
+function getUniqueArrays(stops)
 {
+    unique = {};
     //Make arrays to hold unique values
-    unique.county = []
-    unique.sex = []
-    unique.race = []
-    unique.carColor = []
-    unique.violation = []
+    unique.county = {}
+    unique.sex = {}
+    unique.race = {}
+    unique.carColor = {}
+    unique.violation = {}
 
-    globalData.forEach(element => {
-        if (!unique.county.includes(element.county_name))
+    stops.forEach(element => {
+        //County
+        if (!Object.keys(unique.county).includes(element.county_name))
         {
-            unique.county.push(element.county_name);
+            unique.county[element.county_name] = 1;
         }
-        if (!unique.sex.includes(element.subject_sex))
+        else{
+            unique.county[element.county_name]++;
+        }
+        //Sex
+        if (!Object.keys(unique.sex).includes(element.subject_sex))
         {
-            unique.sex.push(element.subject_sex);
+            unique.sex[element.subject_sex] = 1;
         }
-        if (!unique.race.includes(element.subject_race))
+        else{
+            unique.sex[element.subject_sex]++;
+        }
+        //Race
+        if (!Object.keys(unique.race).includes(element.subject_race))
         {
-            unique.race.push(element.subject_race);
+            unique.race[element.subject_race] = 1;
         }
-        if (!unique.carColor.includes(element.vehicle_color))
+        else{
+            unique.race[element.subject_race]++;
+        }
+        //Car Color
+        if (!Object.keys(unique.carColor).includes(element.vehicle_color))
         {
-            unique.carColor.push(element.vehicle_color);
+            unique.carColor[element.vehicle_color] = 1;
         }
+        else
+        {
+            unique.carColor[element.vehicle_color]++;
+        }
+
         //Split multiple violations into an array
-        element.violation = element.violation.split("|");
+        if((typeof element.violation) == "string")
+            element.violation = element.violation.split("|");
         element.violation.forEach(v => {
             v = v.replace(/\s+/g,"").toUpperCase();
-            if (!unique.violation.includes(v))
-            {
-                unique.violation.push(v);
-            }
+        if (!Object.keys(unique.violation).includes(v))
+        {
+            unique.violation[v] = 1;
+        }
+        else{
+            unique.violation[v]++;
+        }
         });
     });
 
-    unique.county.sort();
-    unique.sex.sort();
-    unique.race.sort();
-    unique.carColor.sort();
-    unique.violation.sort();
-
-    console.log(unique);
+    return unique;
 }
 
-function getCountySummary(county)
+//Fill in countySummary object
+function getCountySummary(county) //county parameter is the name of the county as a string
 {
     countySummary.name = county;
     countySummary.stops = globalData.filter(el => el.county_name == county);
-    console.log(countySummary.name + ": " + countySummary.stops.length);
+    countySummary.unique = getUniqueArrays(countySummary.stops);
+    
+    console.log(countySummary);
 }

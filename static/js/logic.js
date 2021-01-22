@@ -14,7 +14,7 @@ function createMap() {
 };
 
 createLayers(map);
-// createCounties(map);
+createCounties(map);
 createHeatMap(map);
 
 function createLayers(map) {
