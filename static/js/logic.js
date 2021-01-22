@@ -118,12 +118,14 @@ function mapStyle() {
     //   console.log(event);
     //   layer = event.target;
     //   map.flyToBounds(layer.getBounds());
-    }
-    layer.bindPopup(
-      `<h3> ${feature.properties.NAMELSAD10} 
+  }
+  layer.bindPopup(function(){
+      getCountySummary(feature.properties.NAMELSAD10);      
+      return `<h3> ${countySummary.name} 
           </h3>
-          `
-    );
+          <h4>Total Stops: ${countySummary.stops.length}</h4>
+          `;
+    });
   };
 
   (function(){
