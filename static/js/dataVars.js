@@ -1,6 +1,7 @@
 d3.csv("data/traffic_stops_2016.csv").then(doTheThing);
 globalData = 0;
 unique = {};
+countySummary = {};
 
 function doTheThing(data)
 {
@@ -54,4 +55,11 @@ function getUniqueArrays()
     unique.violation.sort();
 
     console.log(unique);
+}
+
+function getCountySummary(county)
+{
+    countySummary.name = county;
+    countySummary.stops = globalData.filter(el => el.county_name == county);
+    console.log(countySummary.name + ": " + countySummary.stops.length);
 }
