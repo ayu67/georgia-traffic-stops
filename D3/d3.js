@@ -34,7 +34,7 @@ let x = d3.scaleBand()
 let y = d3.scaleLinear()
 .rangeRound([height, 0]);
 
-// for some cool stuff later
+// tool tip
 let tooltip = d3
 .select("body")
 .append("div")
@@ -43,17 +43,17 @@ let tooltip = d3
 // parse csv to json
 d3.csv('d3_data.csv')
 .then(function (data) {
-  // reduce neighborhood names down to single instances
-  // grab all occurrences of neighborhood names
+  // reduce car color down to single instances
+  // grab all occurrences of violations
   let color_count = data.reduce((counter, item) => {
     counter[item.vehicle_color] = counter.hasOwnProperty(item.vehicle_color) ? counter[item.vehicle_color] + 1 : 1;
     return counter;
   }, {});
-  // format data the way d3 needs
+  // format data 
   // create array
   let new_data = [];
   // create object constructor
-  function neighborhood_obj(name, count) {
+  function color_obj(name, count) {
     this.name = name;
     this.count = count;
   }
@@ -62,7 +62,7 @@ d3.csv('d3_data.csv')
     // set name to object key
     // set count to object value
     if (key < 10 && Object.keys(color_count)[key] != "") {
-      new_data.push(new neighborhood_obj(Object.entries(color_count)[key][0], Object.entries(color_count)[key][1]))
+      new_data.push(new color_obj(Object.entries(color_count)[key][0], Object.entries(color_count)[key][1]))
     }
   }
   console.log(data)
