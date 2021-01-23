@@ -66,9 +66,82 @@ function renderChoropleth(map){
             `<h2> ${feature.properties.NAMELSAD10} </h3>
             <hr> <h4>Population (2010): ${feature.properties.totpop10} <//h3>`
             );
+
+            // layer.bindPopup(function(){
+    //   layer.bindPopup(function(){
+    //     getCountySummary(feature.properties.NAMELSAD10);      
+    //     return `<h3> ${countySummary.name} 
+    //         </h3>
+    //         <h4>Total Stops: ${countySummary.stops.length}</h4>
+    //         `;
+    //   });
+    // });
+    // };
     };
   };
-  
-  
 
+
+//   function onEachFeature(feature,layer) {
+//     layer.on({
+//       mouseover: MouseOver,
+//       mouseout: MouseOut,
+//       click: onClick,
+//     });
+//     function MouseOver(event) {
+//       layer = event.target;
+//       layer.setStyle({
+//         fillOpacity: 0.9,
+//         fillColor:"#FA506A"
+//       });
+//     }
+//     function MouseOut(event) {
+//       layer = event.target;
+//       layer.setStyle({
+//         fillOpacity: 0.5,
+//         fillColor:"#ED44FA",
+//       });
+//     }
+//     function onClick(event) {
+//       console.log(event);
+//   }
+// };
+
+  
+/* Code for adding graphs to popups. Not working yet */  
+//   // Bind popup to layer with div as content
+//   layer.bindPopup('<div id="chart"></div>');
+  
+//   // Handle event when popup opens
+//   layer.on('popupopen', function (e) {
+
+//       console.log(e.target);  // layer object
+//       console.log(e.target.feature); // layer's feature object
+//       console.log(e.popup); // popup object
+//       console.log(e.popup.getContent()); // the div
+
+//       let trace = {
+
+//       }
+      
+//       Plotly.newPlot('chart', 
+//       [{
+//         x:
+//         y: 
+//         type: 'bar',
+
+//       }], 
+//       {
+//         autosize: false,
+//         width: 300,
+//         height: 150,
+//         margin: {
+//             l: 0,
+//             r: 0,
+//             b: 0,
+//             t: 0,
+//             pad: 0
+//         }
+//       });
+//   });
+// };
 
