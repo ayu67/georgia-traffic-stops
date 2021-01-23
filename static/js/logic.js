@@ -13,8 +13,6 @@ function createMap() {
 };
 
 createLayers(map);
-createCounties(map);
-// createHeatMap(map);
 
 function createLayers(map) {
     let streetMap = L.tileLayer(
@@ -58,86 +56,4 @@ function createLayers(map) {
     .addTo(map);
 };
 
-function createCounties(map){
-    const geoJson = "data/Counties_Georgia.geojson"
-    d3.json(geoJson).then(data =>{
-        console.log(data);
-        let options = {
-            style: mapStyle,
-            onEachFeature: onEachFeature,
-        };
-        let county = L.geoJSON(data, options);
-        county.addTo(map);
-    });
-};
 
-// function createHeatMap(map){
-//     trafficData.then(data =>{
-//         // console.log(data)
-//         points = data.map(traffic =>[
-//             traffic.lat,
-//             traffic.lng,
-//         ]);
-//         // console.log(points);
-//         let heat = L.heatLayer(points, { radius: 3, blur: 5 })
-//         heat.addTo(map);
-//     });
-// };
-
-function mapStyle() {
-    return {
-      color: "white",
-    //   fillColor: color(feature.properties.Reg_Comm),
-      fillColor:"#ED44FA",
-      fillOpacity: 0.5,
-      weight: 1.5,
-    };
-  };
-
-  function onEachFeature(feature,layer) {
-    layer.on({
-      mouseover: MouseOver,
-      mouseout: MouseOut,
-      click: onClick,
-    });
-    function MouseOver(event) {
-      layer = event.target;
-      layer.setStyle({
-        fillOpacity: 0.9,
-        fillColor:"#FA506A"
-      });
-    }
-    function MouseOut(event) {
-      layer = event.target;
-      layer.setStyle({
-        fillOpacity: 0.5,
-        fillColor:"#ED44FA",
-      });
-    }
-    function onClick(event) {
-    //   console.log(event);
-    //   layer = event.target;
-    //   map.flyToBounds(layer.getBounds());
-  }
-  layer.bindPopup(function(){
-      getCountySummary(feature.properties.NAMELSAD10);      
-      return `<h3> ${countySummary.name} 
-          </h3>
-          <h4>Total Stops: ${countySummary.stops.length}</h4>
-          `;
-    });
-  };
-
-  (function(){
-    var originalInitTile = L.GridLayer.prototype._initTile
-    L.GridLayer.include({
-        _initTile: function (tile) {
-            originalInitTile.call(this, tile);
-
-            var tileSize = this.getTileSize();
-
-            tile.style.width = tileSize.x + 1 + 'px';
-            tile.style.height = tileSize.y + 1 + 'px';
-        }
-    });
-})()
