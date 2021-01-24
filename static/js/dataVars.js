@@ -1,14 +1,21 @@
-d3.csv("data/traffic_stops_2016.csv").then(doTheThing);
-globalData = []; 
-globalUnique = {}; //Unique data for full data
-countySummary = {};
+// Prevent duplicate data loads
+if(typeof globalData == "undefined"){
+    globalData = []; 
+    stateSummary = {}; //Unique data for full data
+    countySummary = {};
+    //Extended promise chain for csv data
+    dataPromise = d3.csv("data/traffic_stops_2016.csv").then(doTheThing);
+}
 
 function doTheThing(data)
 {
-    globalData = data
-    globalUnique = getUniqueArrays(globalData);
-    console.log(globalUnique);
+    globalData = data;
+    getStateSummary();
+    globalData = stateSummary.stops;
+    //Return simple resolved Promise to allow dataPromise.then() in other .js files
+    return Promise.resolve();
 }
+
 
 //Return Unique data for any subset of stops data
 function getUniqueArrays(stops)
@@ -79,7 +86,36 @@ function getCountySummary(county) //county parameter is the name of the county a
 {
     countySummary.name = county;
     countySummary.stops = globalData.filter(el => el.county_name == county);
+    countySummary.totalStops = countySummary.stops.length;
     countySummary.unique = getUniqueArrays(countySummary.stops);
     
+    //Added min/max keys and values
+    countySummary.maxRace = Object.keys(countySummary.unique.race).reduce((a,b) => countySummary.unique.race[a] > countySummary.unique.race[b] ? a : b)
+    countySummary.maxSex = Object.keys(countySummary.unique.sex).reduce((a,b) => countySummary.unique.sex[a] > countySummary.unique.sex[b] ? a : b)
+    countySummary.maxViolation = Object.keys(countySummary.unique.violation).reduce((a,b) => countySummary.unique.violation[a] > countySummary.unique.violation[b] ? a : b)
+
+    countySummary.minRace = Object.keys(countySummary.unique.race).reduce((a,b) => countySummary.unique.race[a] < countySummary.unique.race[b] ? a : b)
+    countySummary.minSex = Object.keys(countySummary.unique.sex).reduce((a,b) => countySummary.unique.sex[a] < countySummary.unique.sex[b] ? a : b)
+    countySummary.minViolation = Object.keys(countySummary.unique.violation).reduce((a,b) => countySummary.unique.violation[a] < countySummary.unique.violation[b] ? a : b)
+
     console.log(countySummary);
+}
+
+//Fill in stateSummary object
+function getStateSummary()
+{
+    stateSummary.name = "Georgia";
+    stateSummary.stops = globalData;
+    stateSummary.totalStops = stateSummary.stops.length;
+    stateSummary.unique = getUniqueArrays(stateSummary.stops);
+    
+    stateSummary.maxRace = Object.keys(stateSummary.unique.race).reduce((a,b) => stateSummary.unique.race[a] > stateSummary.unique.race[b] ? a : b)
+    stateSummary.maxSex = Object.keys(stateSummary.unique.sex).reduce((a,b) => stateSummary.unique.sex[a] > stateSummary.unique.sex[b] ? a : b)
+    stateSummary.maxViolation = Object.keys(stateSummary.unique.violation).reduce((a,b) => stateSummary.unique.violation[a] > stateSummary.unique.violation[b] ? a : b)
+
+    stateSummary.minRace = Object.keys(stateSummary.unique.race).reduce((a,b) => stateSummary.unique.race[a] < stateSummary.unique.race[b] ? a : b)
+    stateSummary.minSex = Object.keys(stateSummary.unique.sex).reduce((a,b) => stateSummary.unique.sex[a] < stateSummary.unique.sex[b] ? a : b)
+    stateSummary.minViolation = Object.keys(stateSummary.unique.violation).reduce((a,b) => stateSummary.unique.violation[a] < stateSummary.unique.violation[b] ? a : b)
+
+    console.log(stateSummary);
 }
