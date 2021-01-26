@@ -20,6 +20,7 @@ function optionChanged(value)
         //Load State Data
         loadCountyInfo(stateSummary);
         createBarChart(stateSummary);
+        createLineChart(stateSummary);
         //Feel Free to add Pie chart
     }
     else{
@@ -27,6 +28,7 @@ function optionChanged(value)
         getCountySummary(value);
         loadCountyInfo(countySummary);
         createBarChart(countySummary);
+        createLineChart(countySummary);
         //Feel Free to add Pie chart
     }
 }
@@ -69,18 +71,22 @@ function loadCountyInfo(summary)
     
     d3.select("#maxViolation")
         .text("Most Frequent Violation: " + summary.maxViolation + " ("+summary.unique.violation[summary.maxViolation]+")");
+
+    d3.select("#maxDate")
+    .text("Most Frequent Stop Date: " + summary.maxViolation + " ("+summary.unique.violation[summary.maxViolation]+")");
     
-    d3.select("#minViolation")
-        .text("Least Frequent Violation: " + summary.minViolation + " ("+summary.unique.violation[summary.minViolation]+")");
+    // d3.select("#minViolation")
+    //     .text("Least Frequent Violation: " + summary.minViolation + " ("+summary.unique.violation[summary.minViolation]+")");
         
     d3.select("#maxRace")
         .text("Most Stopped Race: " + summary.maxRace.toUpperCase() + " ("+summary.unique.race[summary.maxRace]+")");
         
-    d3.select("#minRace")
-        .text("Least Stopped Race: " + summary.minRace.toUpperCase() + " ("+summary.unique.race[summary.minRace]+")");
+    // d3.select("#minRace")
+    //     .text("Least Stopped Race: " + summary.minRace.toUpperCase() + " ("+summary.unique.race[summary.minRace]+")");
         
     d3.select("#sex")
         .text("Most Stopped Gender: " + summary.maxSex.toUpperCase() + " ("+summary.unique.sex[summary.maxSex]+")");
+
 }
 
 //Create Violation by Race bar chart using JQWidgets library
@@ -88,6 +94,7 @@ function createBarChart(summary)
 {
     topViolations = getTopTen(summary.unique.violation)
     console.log(topViolations);
+    // console.log(summary.unique.dates);
     // prepare chart data
     var  sampleData = [
         { Violation:topViolations[0], White:getRaceCount(summary.stops,topViolations[0],"white"), Black:getRaceCount(summary.stops,topViolations[0],"black"), Hispanic: getRaceCount(summary.stops,topViolations[0],"hispanic"), Asian:getRaceCount(summary.stops,topViolations[0],"asian/pacific islander"), Other:getRaceCount(summary.stops,topViolations[0],"other")},
@@ -106,26 +113,48 @@ function createBarChart(summary)
 var settings = {
     title: "Top 10 Violations by Race",
     description: "Total number of stops by race for the Top 10 Violations in this county/state",
-    padding: { left: 5, top: 5, right: 5, bottom: 5 },
-    titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+    enableAnimations: true,
+    showLegend: true,
+    padding: { left: 30, top: 30, right: 30, bottom: 30 },
+    titlePadding: { left: 0, top: 0, right: 0, bottom: 10 },
     source: sampleData,
-    categoryAxis:
+    xAxis:
         {
             dataField: 'Violation',
+            flip: false,
             textRotationAngle: 90,
-            showGridLines: false
+            unitInterval: 1,
+            axisSize: 'auto',
+            tickMarks: {
+                visible: true,
+                interval: 1,
+                color: '#BCBCBC'
+                        },
+            gridLines: {
+                visible: true,
+                interval: 1,
+                color: '#BCBCBC'
+                        }
         },
-    colorScheme: 'scheme01',
+    valueAxis:
+        {
+            unitInterval: 10,
+            minValue: 0,
+            title: { text: 'Number of Stops' },
+            tickMarks: { color: '#BCBCBC' }
+        },
+    colorScheme: 'scheme03',
     seriesGroups:
         [
             {
-                type: 'column',
-                columnsGapPercent: 30,
-                seriesGapPercent: 0,
+                type: 'stackedcolumn',
+                orientation: 'horizontal',
+                useGradient: false,
+                columnsGapPercent: 20,
                 valueAxis:
                 {
                     minValue: 0,
-                    
+                    flip: true,
                     description: 'Number of Stops'
                 },
                 series: [
@@ -141,8 +170,44 @@ var settings = {
 
 // select the chartContainer DIV element and render the chart.
 $('#bar').jqxChart(settings);
+};
 
-}
+function createLineChart (summary){
+    let trace = {
+        type: "scatter",
+        x: Object.keys(summary.unique.dates),
+        y:Object.values(summary.unique.dates),
+    };
+
+    let myData = [trace];
+
+    let layout = {
+        // plot_bgcolor: "#E1EFFF",
+        // paper_bgcolor: "#FFF3",
+        margin:{
+            // pad:30,
+        },
+        title:{
+            text: "Traffic Stops by Date",
+            font: {
+                size: 24,
+                family: 'Tahoma, sans-serif',
+            },
+        },
+        yaxis: {
+            title: {
+                text: 'Number of Stops',
+                size: 8,
+                family: 'Tahoma, sans-serif',
+            },
+        },
+    };
+
+    Plotly.newPlot("line", myData, layout);
+};
+
+
+
 //Return top ten keys in unique violations
 function getTopTen(obj)
 {
@@ -162,3 +227,4 @@ function getRaceCount(stops,vio,race)
     });
     return res.length;
 }
+
