@@ -62,19 +62,20 @@ function renderChoropleth(map){
             console.log(event);
         };
     
-        layer.bindPopup(
-            `<h2> ${feature.properties.NAMELSAD10} </h3>
-            <hr> <h4>Population (2010): ${feature.properties.totpop10} <//h3>`
-            );
+        // layer.bindPopup(
+        //     `<h2> ${feature.properties.NAMELSAD10} </h3>
+        //     <hr> <h4>Population (2010): ${feature.properties.totpop10} <//h3>`
+        //     );
 
             // layer.bindPopup(function(){
-    //   layer.bindPopup(function(){
-    //     getCountySummary(feature.properties.NAMELSAD10);      
-    //     return `<h3> ${countySummary.name} 
-    //         </h3>
-    //         <h4>Total Stops: ${countySummary.stops.length}</h4>
-    //         `;
-    //   });
+      layer.bindPopup(function(){
+        getCountySummary(feature.properties.NAMELSAD10);
+        //Added link to County Dashboard      
+        return `<a href="countySummary.html?county=${countySummary.name}"><h3> ${countySummary.name} </h3></a>
+        <hr> <h4>Population (2010): ${feature.properties.totpop10} <//h4>
+            <h4>Total Stops: ${countySummary.totalStops}</h4>
+            `;
+      });
     // });
     // };
     };

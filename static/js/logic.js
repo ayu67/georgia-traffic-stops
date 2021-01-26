@@ -8,6 +8,8 @@ function createMap() {
     let map = L.map("map", {
         center: [32.9, -83.251162],
         zoom:7,
+        //Attempted to keep map movement over Georgia only
+        //maxBounds:[[31,-84],[33,-82]]
     });
     return map
 };
