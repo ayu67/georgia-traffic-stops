@@ -17,7 +17,7 @@ function doTheThing(data)
 }
 
 
-//Return Unique data for any subset of stops data
+//Return Unique data for any subset of stops data.
 function getUniqueArrays(stops)
 {
     unique = {};
