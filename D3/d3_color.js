@@ -1,21 +1,12 @@
 //starting point for svg dimensions
-let svgHeight = 500;
-let svgWidth = 960;
-
-
-let axisDelay = 2500;
-let circleDely = 2500;
+let svgHeight = 650;
+let svgWidth = 900;
 
 //set the margin
-let margin = { top: 75, right: 110, bottom: 90, left: 110 };
+let margin = { top: 125, right: 110, bottom: 90, left: 110 };
 
-// //calculate chart Dimension by adjusting the margin
-// let chartWidth = svgWidth - margin.left - margin.right;
-// let chartHeight = svgHeight - margin.top - margin.bottom;
- 
-
- // set which div chart will show up in
- let svg = d3.select("#bar")
+// set which div chart will show up in
+let svg = d3.select("#bar1")
     .append("svg")
     .attr("height", svgHeight)
     .attr("width", svgWidth),
@@ -41,10 +32,10 @@ let tooltip = d3
 .attr("class", "tooltip")
 .style("opacity", 0)
 // parse csv to json
-d3.csv('d3_data.csv')
+d3.csv('d3_Data.csv')
 .then(function (data) {
   // reduce car color down to single instances
-  // grab all occurrences of violations
+  // grab all traffic stops
   let color_count = data.reduce((counter, item) => {
     counter[item.vehicle_color] = counter.hasOwnProperty(item.vehicle_color) ? counter[item.vehicle_color] + 1 : 1;
     return counter;
@@ -65,8 +56,11 @@ d3.csv('d3_data.csv')
       new_data.push(new color_obj(Object.entries(color_count)[key][0], Object.entries(color_count)[key][1]))
     }
   }
+
   console.log(data)
+  new_data.sort((a, b) => parseFloat(b.count) - parseFloat(a.count));
   console.log(new_data);
+
   // ============= Bar Chart =================
 
   x.domain(new_data.map(function (d, i) {
@@ -83,13 +77,28 @@ d3.csv('d3_data.csv')
 
  chartGroup.append("g")
     .call(d3.axisLeft(y))
-    .append("text")
-    .attr("fill", "#555")
-    .attr("transform", "rotate(-60)")
-    .attr("y", -50)
-    .attr("dy", ".1em")
-    .attr("text-anchor", "end")
-    .text("Violation Count");
+    .attr('text-anchor', 'end')
+
+ chartGroup.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr('x', -(height / 2))
+    .attr('y', -(margin.left)/1.5)
+    .attr('text-anchor', 'middle')
+    .text("Traffic Stop Count");   
+
+ chartGroup.append('text')
+    .attr('x', width / 2 )
+    .attr('y', -50)
+    .attr('text-anchor', 'middle')
+    .text('Traffic Stops by Vehicle Color')
+    .style("font-size", "22px") 
+    .style("text-decoration", "underline") 
+
+ chartGroup.append('text')
+    .attr('x', width / 2 )
+    .attr('y', svgHeight - 160)
+    .attr('text-anchor', 'middle')
+    .text('Vehicle Color')
 
  chartGroup.selectAll(".bar")
     .data(new_data)
@@ -114,7 +123,7 @@ d3.csv('d3_data.csv')
         .duration(200)
         .style("opacity", 1);
       tooltip
-        .html(`Car Color: <b>${d.name}</b></br>Violation Count: <b>${d.count}</b>`)
+        .html(`Car Color: <b>${d.name}</b></br>Traffic Stop Count: <b>${d.count}</b>`)
         .style("left", `${d3.event.pageX}px`)
         .style("top", `${d3.event.pageY - 50}px`)
     })
@@ -124,19 +133,5 @@ d3.csv('d3_data.csv')
         .duration(500)
         .style('opacity', 0)
     });
-  // vega lite code
-//   let vlSpec = {
-//     data: {
-//       values: new_data
-//     },
-//     mark: "bar",
-//     encoding: {
-//       y: { field: "count", type: "quantitative" },
-//       x: {
-//         field: "name", type: "nominal"
-//       }
-//     }
-//   }
-//   vegaEmbed("#printed_data", vlSpec);
 })
 .catch(err => console.log(err));

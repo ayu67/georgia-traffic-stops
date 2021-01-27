@@ -1,4 +1,4 @@
-renderChoropleth(map);
+dataPromise.then(() => renderChoropleth(map));
 
 function renderChoropleth(map){
     const geoJson = "data/Counties_Georgia.geojson"
@@ -30,7 +30,7 @@ function renderChoropleth(map){
           fillColor: getColor(feature.properties.totpop10),
           fillOpacity: 0.7,
           weight: 1.5,
-          dashArray: '3',
+          // dashArray: '3',
           opacity: 1,
         };
       };
@@ -38,8 +38,8 @@ function renderChoropleth(map){
       function onEachFeature(feature,layer) {
         let geojson = L.geoJSON();
         layer.on({
-        //   mouseover: highlightFeature,
-        //   mouseout:  resetHighlight,
+          // mouseover: highlightFeature,
+          mouseout:  resetHighlight,
           click: onClick,
         });
     
@@ -55,29 +55,20 @@ function renderChoropleth(map){
         };
         
         function resetHighlight() {
-            geojson.resetStyle(choroplethStyle);
+            geojson.resetStyle();
         };
     
         function onClick(event) {
             console.log(event);
         };
-    
-        // layer.bindPopup(
-        //     `<h2> ${feature.properties.NAMELSAD10} </h3>
-        //     <hr> <h4>Population (2010): ${feature.properties.totpop10} <//h3>`
-        //     );
-
-            // layer.bindPopup(function(){
       layer.bindPopup(function(){
         getCountySummary(feature.properties.NAMELSAD10);
         //Added link to County Dashboard      
-        return `<a href="countySummary.html?county=${countySummary.name}"><h3> ${countySummary.name} </h3></a>
-        <hr> <h4>Population (2010): ${feature.properties.totpop10} <//h4>
+        return `<a href="countySummary.html?county=${countySummary.name}" target="_blank" rel="noopener noreferrer"><h1> ${countySummary.name} </h1></a>
+        <h4>Click County Name for more detailed stats</h4> <hr> <h4>Population (2010): ${feature.properties.totpop10} </h4>
             <h4>Total Stops: ${countySummary.totalStops}</h4>
             `;
       });
-    // });
-    // };
     };
   };
 

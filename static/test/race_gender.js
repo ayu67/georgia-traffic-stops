@@ -1,5 +1,5 @@
 // Read the data from CSV
-d3.csv('../../data/traffic_stops_2016.csv').then (sampledata => {
+d3.json(url).then (function(data) {
     var data = sampledata
     // var asian = data.subject_race.filter(function(d){return d === 'asian/pacific islander'});
  

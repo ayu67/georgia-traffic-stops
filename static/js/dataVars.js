@@ -27,6 +27,7 @@ function getUniqueArrays(stops)
     unique.race = {}
     unique.carColor = {}
     unique.violation = {}
+    unique.dates = {}
 
     stops.forEach(element => {
         //County
@@ -62,7 +63,15 @@ function getUniqueArrays(stops)
         {
             unique.carColor[element.vehicle_color]++;
         }
-
+        //date
+        if (!Object.keys(unique.dates).includes(element.date))
+        {
+            unique.dates[element.date] = 1;
+        }
+        else
+        {
+            unique.dates[element.date]++;
+        }
         //Split multiple violations into an array
         if((typeof element.violation) == "string")
             element.violation = element.violation.split("|");
@@ -98,7 +107,7 @@ function getCountySummary(county) //county parameter is the name of the county a
     countySummary.minSex = Object.keys(countySummary.unique.sex).reduce((a,b) => countySummary.unique.sex[a] < countySummary.unique.sex[b] ? a : b)
     countySummary.minViolation = Object.keys(countySummary.unique.violation).reduce((a,b) => countySummary.unique.violation[a] < countySummary.unique.violation[b] ? a : b)
 
-    console.log(countySummary);
+    console.log(countySummary.unique);
 }
 
 //Fill in stateSummary object
@@ -119,3 +128,4 @@ function getStateSummary()
 
     console.log(stateSummary);
 }
+

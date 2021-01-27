@@ -5,15 +5,27 @@ body {
 }
 
 .bar {
-  fill: orange;
+  fill: rgb(41, 41, 41);
 }
 
 .bar:hover {
-  fill: green;
+  fill:rgb(26, 26, 26);
 }
 
 svg {
-  background-color: rgba(255, 248, 148, 0.733);
+  background-color:rgba(235, 235, 235, 0.87);
+}
+
+body {
+  background-color: rgba(235, 235, 235, 0.63);
+}
+
+.container_1 {
+  float: middle;
+}
+
+.container_2 {
+  float: middle;
 }
 
 
@@ -23,7 +35,18 @@ div.tooltip {
   text-align: center;
   padding: 2px;
   font: 12px sans-serif;
-  background: #d9534f;
-  border: 2px solid #d9534f;
+  background: #bdcdfa;
+  border: 2px solid #a5baf5;
+  pointer-events: none;
+}
+
+div.tooltip2 {
+  color: rgb(0, 0, 0);
+  position: absolute;
+  text-align: center;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: #bdcdfa;
+  border: 2px solid #a5baf5;
   pointer-events: none;
 }
