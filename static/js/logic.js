@@ -1,6 +1,6 @@
 //Map Renders Best in Firefox
 
-trafficData = d3.csv("data/traffic_stops_2016.csv");
+//trafficData = d3.csv("data/traffic_stops_2016.csv");
 
 let map = createMap();
 

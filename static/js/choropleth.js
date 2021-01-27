@@ -1,7 +1,7 @@
 dataPromise.then(() => renderChoropleth(map));
 
 function renderChoropleth(map){
-    const geoJson = "data/Counties_Georgia.geojson"
+    const geoJson = "/geojson"
     d3.json(geoJson).then(data =>{
         console.log(data);
         let options = {

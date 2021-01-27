@@ -4,12 +4,12 @@ if(typeof globalData == "undefined"){
     stateSummary = {}; //Unique data for full data
     countySummary = {};
     //Extended promise chain for csv data
-    dataPromise = d3.csv("data/traffic_stops_2016.csv").then(doTheThing);
+    dataPromise = d3.json('/data').then(doTheThing);
 }
 
-function doTheThing(data)
+function doTheThing(d)
 {
-    globalData = data;
+    globalData = d.data;
     getStateSummary();
     globalData = stateSummary.stops;
     //Return simple resolved Promise to allow dataPromise.then() in other .js files
