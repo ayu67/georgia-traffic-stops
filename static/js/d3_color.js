@@ -1,3 +1,16 @@
+//JS function used to get data from the 
+
+var url = '/data'
+
+fetch('/data').then(function (response) {
+    return response.text();
+}).then(function (text) {
+    console.log('GET response text:');
+    console.log(text); 
+});
+
+//****************************************
+
 //starting point for svg dimensions
 let svgHeight = 650;
 let svgWidth = 850;
@@ -33,10 +46,8 @@ let tooltip = d3
 .style("opacity", 0)
 
 // Read the data from flask api
-// var url = '/data'
 
-// d3.json(url)
-d3.csv('../data/traffic_stops_2016.csv')
+d3.json(url)
 .then(function (data) {
   // reduce car color down to single instances
   // grab all traffic stops

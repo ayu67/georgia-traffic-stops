@@ -1,3 +1,16 @@
+//JS function used to get data from the 
+
+var url = '/data'
+
+fetch('/data').then(function (response) {
+    return response.text();
+}).then(function (text) {
+    console.log('GET response text:');
+    console.log(text); 
+});
+
+//****************************************
+
 //starting point for svg dimensions
 let svgHeight2 = 650;
 let svgWidth2 = 850;
@@ -36,7 +49,7 @@ let tooltip2 = d3
 // var url = '/data'
 
 // d3.json(url)
-d3.csv('../data/traffic_stops_2016.csv')
+d3.json(url)
 .then(function (data) {
   // reduce car make down to single instances
   // grab all traffic stops
