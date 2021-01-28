@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>GA Traffic Stops</title>
+    <title>Vehicle Summary</title>
+    <link rel="stylesheet" href="/static/css/d3.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin=""/>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="static/css/style.css" />
   </head>
   <body>
     <nav class="navbar navbar-default">
@@ -19,21 +14,38 @@
         </div>
         <ul class="nav navbar-nav">
           <li><a href="countySummary.html">Dashboard</a></li>
-          <li><a href="index.html"> Choropleth  Map </a></li>
+          <li><a href="choropleth.html"> Choropleth  Map </a></li>
           <li><a href="heatmap.html">Heat Map</a></li>
-          <li><a href="D3.html"> General Statistics </a></li>
+          <li><a href="generalStats.html"> General Statistics </a></li>
         </ul>
       </div>
     </nav>
-    <div id="map"></div>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""></script>
-    <script type="text/javascript" src="static/js/config.js"></script>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 jumbotron text-center">
+          <h1>2016 Georgia Traffic Stops</h1>
+          <h2>Vehicle Summary</h2>
+          <p>
+            Do certain vehicle colors or makes get pulled over more often?
+          </p>
+          <div class="container_1">
+            <div id="bar1">
+              <!-- append our chart here -->
+            </div>
+          </div>
+          <div class="container_2">
+            <div id="bar2">
+              <!-- append our chart here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
     <script type="text/javascript" src="static/js/dataVars.js"></script>
-    <script type="text/javascript" src="static/js/mapLogic.js"></script>
-    <!-- <script type="text/javascript" src="static/js/heatmap.js"></script> -->
-    <script type="text/javascript" src="static/js/choropleth.js"></script>
-    <script type="text/javascript" src="static/js/leaflet-heat.js"></script>
+    <script type="text/javascript" src="/static/js/race_gender.js"></script>
+    <script type="text/javascript" src="/static/js/d3_color.js"></script>
+    <script type="text/javascript" src="/static/js/d3_make.js"></script>
+
   </body>
 </html>
