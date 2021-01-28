@@ -1,12 +1,12 @@
 //starting point for svg dimensions
 let svgHeight = 650;
-let svgWidth = 900;
+let svgWidth = 850;
 
 //set the margin
-let margin = { top: 125, right: 110, bottom: 90, left: 110 };
+let margin = { top: 110, right: 90, bottom: 90, left: 90 };
 
-// set which div chart will show up in
-let svg = d3.select("#bar1")
+//assiging chart div
+let svg = d3.select("#bar1") 
     .append("svg")
     .attr("height", svgHeight)
     .attr("width", svgWidth),
@@ -31,8 +31,12 @@ let tooltip = d3
 .append("div")
 .attr("class", "tooltip")
 .style("opacity", 0)
-// parse csv to json
-d3.csv('d3_Data.csv')
+
+// Read the data from flask api
+// var url = '/data'
+
+// d3.json(url)
+d3.csv('../data/traffic_stops_2016.csv')
 .then(function (data) {
   // reduce car color down to single instances
   // grab all traffic stops
@@ -40,9 +44,8 @@ d3.csv('d3_Data.csv')
     counter[item.vehicle_color] = counter.hasOwnProperty(item.vehicle_color) ? counter[item.vehicle_color] + 1 : 1;
     return counter;
   }, {});
-  // format data 
   // create array
-  let new_data = [];
+  let color_data = [];
   // create object constructor
   function color_obj(name, count) {
     this.name = name;
@@ -53,27 +56,26 @@ d3.csv('d3_Data.csv')
     // set name to object key
     // set count to object value
     if (key < 10 && Object.keys(color_count)[key] != "") {
-      new_data.push(new color_obj(Object.entries(color_count)[key][0], Object.entries(color_count)[key][1]))
+      color_data.push(new color_obj(Object.entries(color_count)[key][0], Object.entries(color_count)[key][1]))
     }
   }
 
   console.log(data)
-  new_data.sort((a, b) => parseFloat(b.count) - parseFloat(a.count));
-  console.log(new_data);
+  color_data.sort((a, b) => parseFloat(b.count) - parseFloat(a.count));
+  console.log(color_data);
 
   // ============= Bar Chart =================
-
-  x.domain(new_data.map(function (d, i) {
+  //creating x & y axis based on data
+  x.domain(color_data.map(function (d, i) {
     return d.name;
   }))
-  y.domain([0, d3.max(new_data, function (d) {
-    return d.count
+  y.domain([0, d3.max(color_data, function (d) {
+    return d.count + (40000 - d.count)
   })]);
   chartGroup.append("g")
     .attr("transform", `translate(0,${height})`)
     .call(d3.axisBottom(x))
     .selectAll("text")
-    // .attr("color", "#ffff")
 
  chartGroup.append("g")
     .call(d3.axisLeft(y))
@@ -101,15 +103,15 @@ d3.csv('d3_Data.csv')
     .text('Vehicle Color')
 
  chartGroup.selectAll(".bar")
-    .data(new_data)
+    .data(color_data)
     .enter()
     .append("rect")
     .attr("class", "bar")
-    //width of/spacing between bars
+    //spacing between bars
     .attr("x", function (d) {
       return x(d.name)
     })
-    // height of bars
+    //height of bars
     .attr("y", function (d) {
       return y(Number(d.count));
     })
