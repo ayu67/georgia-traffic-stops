@@ -24,6 +24,10 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
+@app.route("/choropleth.html")
+def choropleth():
+    return render_template('choropleth.html')
+
 @app.route("/countySummary.html")
 def countySummary():
     return render_template('countySummary.html')
@@ -31,6 +35,10 @@ def countySummary():
 @app.route("/heatmap.html")
 def heatMap():
     return render_template('heatmap.html')
+
+@app.route("/generalStats.html")
+def generalStats():
+    return render_template('generalStats.html')
 
 @app.route("/geojson")
 def geoJson():
