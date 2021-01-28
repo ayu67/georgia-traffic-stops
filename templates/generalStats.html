@@ -2,9 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Vehicle Summary</title>
-    <link rel="stylesheet" href="/static/css/d3.css"/>
+    <title>General Statistics</title>
+    <!-- <link rel="stylesheet" href="/static/css/d3.css"/> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   </head>
   <body>
     <nav class="navbar navbar-default">
@@ -20,28 +21,31 @@
         </ul>
       </div>
     </nav>
+    
     <div class="container">
       <div class="row">
         <div class="col-md-12 jumbotron text-center">
           <h1>2016 Georgia Traffic Stops</h1>
+          <h2>General Statistics Dashboard</h2>
+        </div>
+        <div class="row col-md-12 text-center">
+          <h2>Race and Gender Summary</h2>
+          <div id="plot"></div>
+        </div>
+        <div class="row col-md-12 text-center">
           <h2>Vehicle Summary</h2>
-          <p>
-            Do certain vehicle colors or makes get pulled over more often?
-          </p>
-          <div class="container_1">
-            <div id="bar1">
-              <!-- append our chart here -->
+          <p>Do certain vehicle colors or makes get pulled over more often?</p>
+            <div class="container_float">
+              <div id="bar1"></div>
             </div>
-          </div>
-          <div class="container_2">
-            <div id="bar2">
-              <!-- append our chart here -->
+            <div class="container_float">
+              <div id="bar2"></div>
             </div>
-          </div>
         </div>
       </div>
     </div>
     <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript" src="static/js/dataVars.js"></script>
     <script type="text/javascript" src="/static/js/race_gender.js"></script>
     <script type="text/javascript" src="/static/js/d3_color.js"></script>
