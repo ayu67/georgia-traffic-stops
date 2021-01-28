@@ -92,8 +92,8 @@ function loadCountyInfo(summary)
 //Create Violation by Race bar chart using JQWidgets library
 function createBarChart(summary)
 {
-    topViolations = getTopTen(summary.unique.violation)
-    console.log(topViolations);
+    topViolations = getTopFive(summary.unique.violation)
+    // console.log(topViolations);
     // console.log(summary.unique.dates);
     // prepare chart data
     var  sampleData = [
@@ -102,17 +102,12 @@ function createBarChart(summary)
         { Violation:topViolations[2], White:getRaceCount(summary.stops,topViolations[2],"white"), Black:getRaceCount(summary.stops,topViolations[2],"black"), Hispanic: getRaceCount(summary.stops,topViolations[2],"hispanic"), Asian:getRaceCount(summary.stops,topViolations[2],"asian/pacific islander"), Other:getRaceCount(summary.stops,topViolations[2],"other")},
         { Violation:topViolations[3], White:getRaceCount(summary.stops,topViolations[3],"white"), Black:getRaceCount(summary.stops,topViolations[3],"black"), Hispanic: getRaceCount(summary.stops,topViolations[3],"hispanic"), Asian:getRaceCount(summary.stops,topViolations[3],"asian/pacific islander"), Other:getRaceCount(summary.stops,topViolations[3],"other")},
         { Violation:topViolations[4], White:getRaceCount(summary.stops,topViolations[4],"white"), Black:getRaceCount(summary.stops,topViolations[4],"black"), Hispanic: getRaceCount(summary.stops,topViolations[4],"hispanic"), Asian:getRaceCount(summary.stops,topViolations[4],"asian/pacific islander"), Other:getRaceCount(summary.stops,topViolations[4],"other")},
-        { Violation:topViolations[5], White:getRaceCount(summary.stops,topViolations[5],"white"), Black:getRaceCount(summary.stops,topViolations[5],"black"), Hispanic: getRaceCount(summary.stops,topViolations[5],"hispanic"), Asian:getRaceCount(summary.stops,topViolations[5],"asian/pacific islander"), Other:getRaceCount(summary.stops,topViolations[5],"other")},
-        { Violation:topViolations[6], White:getRaceCount(summary.stops,topViolations[6],"white"), Black:getRaceCount(summary.stops,topViolations[6],"black"), Hispanic: getRaceCount(summary.stops,topViolations[6],"hispanic"), Asian:getRaceCount(summary.stops,topViolations[6],"asian/pacific islander"), Other:getRaceCount(summary.stops,topViolations[6],"other")},
-        { Violation:topViolations[7], White:getRaceCount(summary.stops,topViolations[7],"white"), Black:getRaceCount(summary.stops,topViolations[7],"black"), Hispanic: getRaceCount(summary.stops,topViolations[7],"hispanic"), Asian:getRaceCount(summary.stops,topViolations[7],"asian/pacific islander"), Other:getRaceCount(summary.stops,topViolations[7],"other")},
-        { Violation:topViolations[8], White:getRaceCount(summary.stops,topViolations[8],"white"), Black:getRaceCount(summary.stops,topViolations[8],"black"), Hispanic: getRaceCount(summary.stops,topViolations[8],"hispanic"), Asian:getRaceCount(summary.stops,topViolations[8],"asian/pacific islander"), Other:getRaceCount(summary.stops,topViolations[8],"other")},
-        { Violation:topViolations[9], White:getRaceCount(summary.stops,topViolations[9],"white"), Black:getRaceCount(summary.stops,topViolations[9],"black"), Hispanic: getRaceCount(summary.stops,topViolations[9],"hispanic"), Asian:getRaceCount(summary.stops,topViolations[9],"asian/pacific islander"), Other:getRaceCount(summary.stops,topViolations[9],"other")},
-    ];
+        ];
     
 // prepare jqxChart settings
 var settings = {
-    title: "Top 10 Violations by Race",
-    description: "Total number of stops by race for the Top 10 Violations in this county/state",
+    title: "Top 5 Violations by Race",
+    description: "Total number of stops by race for the Top 5 Violations in this county/state",
     enableAnimations: true,
     showLegend: true,
     padding: { left: 30, top: 30, right: 30, bottom: 30 },
@@ -209,11 +204,11 @@ function createLineChart (summary){
 
 
 //Return top ten keys in unique violations
-function getTopTen(obj)
+function getTopFive(obj)
 {
     keys = Object.keys(obj)
     keys.sort(function(a,b){ return obj[b] - obj[a];});
-    topKeys = keys.slice(0,10);
+    topKeys = keys.slice(0,5);
     return topKeys;
 }
 
