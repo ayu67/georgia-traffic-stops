@@ -6,7 +6,7 @@ let svgWidth = 850;
 let margin = { top: 110, right: 90, bottom: 90, left: 90 };
 
 //assiging chart div
-let svg = d3.select("#bar1")
+let svg = d3.select("#bar1") 
     .append("svg")
     .attr("height", svgHeight)
     .attr("width", svgWidth),
