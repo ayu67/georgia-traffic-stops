@@ -4,12 +4,12 @@ if(typeof globalData == "undefined"){
     stateSummary = {}; //Unique data for full data
     countySummary = {};
     //Extended promise chain for csv data
-    dataPromise = d3.csv("data/traffic_stops_2016.csv").then(doTheThing);
+    dataPromise = d3.json('/data').then(doTheThing);
 }
 
-function doTheThing(data)
+function doTheThing(d)
 {
-    globalData = data;
+    globalData = d.data;
     getStateSummary();
     globalData = stateSummary.stops;
     //Return simple resolved Promise to allow dataPromise.then() in other .js files
@@ -29,54 +29,54 @@ function getUniqueArrays(stops)
     unique.violation = {}
     unique.dates = {}
 
-    stops.forEach(element => {
+    stops.forEach(stop => {
         //County
-        if (!Object.keys(unique.county).includes(element.county_name))
+        if (!Object.keys(unique.county).includes(stop.county_name)) //if(the county of this stop is NOT in the list of unique county keys)
         {
-            unique.county[element.county_name] = 1;
+            unique.county[stop.county_name] = 1;
         }
         else{
-            unique.county[element.county_name]++;
+            unique.county[stop.county_name]++;
         }
         //Sex
-        if (!Object.keys(unique.sex).includes(element.subject_sex))
+        if (!Object.keys(unique.sex).includes(stop.subject_sex))
         {
-            unique.sex[element.subject_sex] = 1;
+            unique.sex[stop.subject_sex] = 1;
         }
         else{
-            unique.sex[element.subject_sex]++;
+            unique.sex[stop.subject_sex]++;
         }
         //Race
-        if (!Object.keys(unique.race).includes(element.subject_race))
+        if (!Object.keys(unique.race).includes(stop.subject_race))
         {
-            unique.race[element.subject_race] = 1;
+            unique.race[stop.subject_race] = 1;
         }
         else{
-            unique.race[element.subject_race]++;
+            unique.race[stop.subject_race]++;
         }
         //Car Color
-        if (!Object.keys(unique.carColor).includes(element.vehicle_color))
+        if (!Object.keys(unique.carColor).includes(stop.vehicle_color))
         {
-            unique.carColor[element.vehicle_color] = 1;
+            unique.carColor[stop.vehicle_color] = 1;
         }
         else
         {
-            unique.carColor[element.vehicle_color]++;
+            unique.carColor[stop.vehicle_color]++;
         }
         //date
-        if (!Object.keys(unique.dates).includes(element.date))
+        if (!Object.keys(unique.dates).includes(stop.date))
         {
-            unique.dates[element.date] = 1;
+            unique.dates[stop.date] = 1;
         }
         else
         {
-            unique.dates[element.date]++;
+            unique.dates[stop.date]++;
         }
         //Split multiple violations into an array
-        if((typeof element.violation) == "string")
-            element.violation = element.violation.split("|");
-        element.violation.forEach(v => {
-            v = v.replace(/\s+/g,"").toUpperCase();
+        if((typeof stop.violation) == "string")
+            stop.violation = stop.violation.split("|"); //Turn the one string into an array
+        stop.violation.forEach(v => {
+            v = v.replace(/\s+/g,"").toUpperCase(); //Force to uppercase and remove all spaces
         if (!Object.keys(unique.violation).includes(v))
         {
             unique.violation[v] = 1;

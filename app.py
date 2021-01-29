@@ -3,6 +3,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 from flask import Flask, jsonify
+from flask import render_template
 
 # Database Setup
 # connection_string =  'postgresql://postgres:letterpen@localhost:5432/ga_traffic_stops'
@@ -20,6 +21,31 @@ app = Flask(__name__)
 # Flask Routes
 
 @app.route("/")
+def home():
+    return render_template('index.html')
+
+@app.route("/choropleth.html")
+def choropleth():
+    return render_template('choropleth.html')
+
+@app.route("/countySummary.html")
+def countySummary():
+    return render_template('countySummary.html')
+
+@app.route("/heatmap.html")
+def heatMap():
+    return render_template('heatmap.html')
+
+@app.route("/generalStats.html")
+def generalStats():
+    return render_template('generalStats.html')
+
+@app.route("/geojson")
+def geoJson():
+    f = open('georgia-traffic-stops/data/Counties_Georgia.geojson')
+    return f.read()
+
+@app.route("/data")
 def db_to_json():
     data = []
     stops = engine.execute(f'select * from traffic_2016')

@@ -1,11 +1,24 @@
+//JS function used to get data from the 
+
+var url = '/data'
+
+fetch('/data').then(function (response) {
+    return response.text();
+}).then(function (text) {
+    console.log('GET response text:');
+    console.log(text); 
+});
+
+//****************************************
+
 //starting point for svg dimensions
 let svgHeight2 = 650;
-let svgWidth2 = 900;
+let svgWidth2 = 850;
 
-//set the margin2
-let margin2 = { top: 125, right: 110, bottom: 90, left: 110 };
+//set the margin
+let margin2 = { top: 110, right: 90, bottom: 90, left: 90 };
 
-// set which div chart will show up in
+//assiging chart div
 let svg2 = d3.select("#bar2")
     .append("svg")
     .attr("height", svgHeight2)
@@ -31,8 +44,12 @@ let tooltip2 = d3
 .append("div")
 .attr("class", "tooltip2")
 .style("opacity", 0)
-// parse csv to json
-d3.csv('d3_data.csv')
+
+// Read the data from flask api
+// var url = '/data'
+
+// d3.json(url)
+d3.json(url)
 .then(function (data) {
   // reduce car make down to single instances
   // grab all traffic stops
@@ -40,9 +57,8 @@ d3.csv('d3_data.csv')
     counter[item.vehicle_make] = counter.hasOwnProperty(item.vehicle_make) ? counter[item.vehicle_make] + 1 : 1;
     return counter;
   }, {});
-  // format data 
   // create array
-  let new_data2 = [];
+  let make_data = [];
   // create object constructor
   function color_obj(name, count) {
     this.name = name;
@@ -53,27 +69,26 @@ d3.csv('d3_data.csv')
     // set name to object key
     // set count to object value
     if (key < 10 && Object.keys(make_count)[key] != "") {
-      new_data2.push(new color_obj(Object.entries(make_count)[key][0], Object.entries(make_count)[key][1]))
+      make_data.push(new color_obj(Object.entries(make_count)[key][0], Object.entries(make_count)[key][1]))
     }
   }
 
   console.log(data)
-  new_data2.sort((a, b) => parseFloat(b.count) - parseFloat(a.count));
-  console.log(new_data2)
+  make_data.sort((a, b) => parseFloat(b.count) - parseFloat(a.count));
+  console.log(make_data)
 
   // ============= Bar Chart =================
-
-  x2.domain(new_data2.map(function (d, i) {
+  //creating x & y axis based on data
+  x2.domain(make_data.map(function (d, i) {
     return d.name;
   }))
-  y2.domain([0, d3.max(new_data2, function (d) {
-    return d.count
+  y2.domain([0, d3.max(make_data, function (d) {
+    return d.count + (28000 - d.count)
   })]);
   chartGroup2.append("g")
     .attr("transform", `translate(0,${height2})`)
     .call(d3.axisBottom(x2))
     .selectAll("text")
-    // .attr("color", "#ffff")
 
  chartGroup2.append("g")
     .call(d3.axisLeft(y2))
@@ -101,15 +116,15 @@ d3.csv('d3_data.csv')
     .text('Vehicle Make')
 
  chartGroup2.selectAll(".bar")
-    .data(new_data2)
+    .data(make_data)
     .enter()
     .append("rect")
     .attr("class", "bar")
-    //width of/spacing between bars
+    //spacing between bars
     .attr("x", function (d) {
       return x2(d.name)
     })
-    // height of bars
+    //height of bars
     .attr("y", function (d) {
       return y2(Number(d.count));
     })
