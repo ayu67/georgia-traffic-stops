@@ -42,7 +42,7 @@ def generalStats():
 
 @app.route("/geojson")
 def geoJson():
-    f = open('data/Counties_Georgia.geojson')
+    f = open('georgia-traffic-stops/data/Counties_Georgia.geojson')
     return f.read()
 
 @app.route("/data")
